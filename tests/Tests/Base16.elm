@@ -43,7 +43,7 @@ encodeTests =
                     \_ ->
                         Expect.equal
                             (encode (bytesOf data))
-                            (Ok encoded)
+                            encoded
             )
 
 

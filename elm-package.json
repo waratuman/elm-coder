@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "summary": "An Base64, Base32, and Base16 decoder and encoder",
     "repository": "https://github.com/waratuman/elm-coder.git",
     "license": "BSD3",

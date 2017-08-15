@@ -18,7 +18,7 @@ decode =
 
 {-| Encode a list of bytes into a base32 string.
 -}
-encode : List Int -> Result String String
+encode : List Int -> String
 encode =
     Coder.encode ( 1, 2, "=", intToChar, charToInt )
 
@@ -78,56 +78,61 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Result String Char
+intToChar : Int -> Char
 intToChar int =
     case int of
         0 ->
-            Ok '0'
+            '0'
 
         1 ->
-            Ok '1'
+            '1'
 
         2 ->
-            Ok '2'
+            '2'
 
         3 ->
-            Ok '3'
+            '3'
 
         4 ->
-            Ok '4'
+            '4'
 
         5 ->
-            Ok '5'
+            '5'
 
         6 ->
-            Ok '6'
+            '6'
 
         7 ->
-            Ok '7'
+            '7'
 
         8 ->
-            Ok '8'
+            '8'
 
         9 ->
-            Ok '9'
+            '9'
 
         10 ->
-            Ok 'A'
+            'A'
 
         11 ->
-            Ok 'B'
+            'B'
 
         12 ->
-            Ok 'C'
+            'C'
 
         13 ->
-            Ok 'D'
+            'D'
 
         14 ->
-            Ok 'E'
+            'E'
 
         15 ->
-            Ok 'F'
+            'F'
 
-        _ ->
-            Err "Invalid byte value for base32"
+        x ->
+            Debug.crash
+                ("Invalid byte value \""
+                    ++ (toString x)
+                    ++ "\" for base16"
+                )
+                '💣'

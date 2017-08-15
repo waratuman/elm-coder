@@ -16,84 +16,11 @@ decode =
     Coder.decode ( 3, 4, "=", intToChar, charToInt )
 
 
-
--- decode : String -> Result String (List Int)
--- decode string =
---     String.toList string
---         |> groupsOf 4
---         |> map decodeChunk
---         |> combine
---         |> andThen
---             (\x ->
---                 let
---                     output =
---                         List.concat x
---                     p =
---                         String.indexes "=" string |> List.length
---                     s =
---                         List.length output - p
---                 in
---                     output
---                         |> List.take s
---                         |> Ok
---             )
--- decodeChunk : List Char -> Result String (List Int)
--- decodeChunk chunk =
---     chunk
---         |> map charToInt
---         |> combine
---         |> andThen
---             (\list ->
---                 let
---                     n =
---                         List.foldl (\x acc -> (shiftLeftBy 6 acc) + x) 0 list
---                 in
---                     [ 2, 1, 0 ]
---                         |> List.map (\i -> shiftRightZfBy (i * 8) n)
---                         |> List.map (and 255)
---                         |> Ok
---             )
-
-
 {-| Encode a list of bytes into a base64 string.
 -}
-encode : List Int -> Result String String
+encode : List Int -> String
 encode =
     Coder.encode ( 3, 4, "=", intToChar, charToInt )
-
-
-
--- encode bytes =
---     let
---         n =
---             (toFloat (List.length bytes * 4)) / 3 |> ceiling
---         p =
---             if n % 4 > 0 then
---                 3 - (List.length bytes * 4) % 3
---             else
---                 0
---         data =
---             (bytes ++ (List.repeat p 0))
---     in
---         groupsOf 3 data
---             |> map encodeChunk
---             |> combine
---             |> andThen
---                 (\x ->
---                     (String.join "" x |> String.slice 0 n)
---                         ++ (String.repeat p "=")
---                         |> Ok
---                 )
--- encodeChunk : List Int -> Result String String
--- encodeChunk chunk =
---     let
---         n =
---             List.foldl (\x acc -> (shiftLeftBy 8 acc) + x) 0 chunk
---     in
---         [ 3, 2, 1, 0 ]
---             |> List.map (\i -> shiftRightZfBy (i * 6) n |> and 63 |> intToChar)
---             |> combine
---             |> andThen (\l -> String.fromList l |> Ok)
 
 
 charToInt : Char -> Result String Int
@@ -298,200 +225,205 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Result String Char
+intToChar : Int -> Char
 intToChar int =
     case int of
         0 ->
-            Ok 'A'
+            'A'
 
         1 ->
-            Ok 'B'
+            'B'
 
         2 ->
-            Ok 'C'
+            'C'
 
         3 ->
-            Ok 'D'
+            'D'
 
         4 ->
-            Ok 'E'
+            'E'
 
         5 ->
-            Ok 'F'
+            'F'
 
         6 ->
-            Ok 'G'
+            'G'
 
         7 ->
-            Ok 'H'
+            'H'
 
         8 ->
-            Ok 'I'
+            'I'
 
         9 ->
-            Ok 'J'
+            'J'
 
         10 ->
-            Ok 'K'
+            'K'
 
         11 ->
-            Ok 'L'
+            'L'
 
         12 ->
-            Ok 'M'
+            'M'
 
         13 ->
-            Ok 'N'
+            'N'
 
         14 ->
-            Ok 'O'
+            'O'
 
         15 ->
-            Ok 'P'
+            'P'
 
         16 ->
-            Ok 'Q'
+            'Q'
 
         17 ->
-            Ok 'R'
+            'R'
 
         18 ->
-            Ok 'S'
+            'S'
 
         19 ->
-            Ok 'T'
+            'T'
 
         20 ->
-            Ok 'U'
+            'U'
 
         21 ->
-            Ok 'V'
+            'V'
 
         22 ->
-            Ok 'W'
+            'W'
 
         23 ->
-            Ok 'X'
+            'X'
 
         24 ->
-            Ok 'Y'
+            'Y'
 
         25 ->
-            Ok 'Z'
+            'Z'
 
         26 ->
-            Ok 'a'
+            'a'
 
         27 ->
-            Ok 'b'
+            'b'
 
         28 ->
-            Ok 'c'
+            'c'
 
         29 ->
-            Ok 'd'
+            'd'
 
         30 ->
-            Ok 'e'
+            'e'
 
         31 ->
-            Ok 'f'
+            'f'
 
         32 ->
-            Ok 'g'
+            'g'
 
         33 ->
-            Ok 'h'
+            'h'
 
         34 ->
-            Ok 'i'
+            'i'
 
         35 ->
-            Ok 'j'
+            'j'
 
         36 ->
-            Ok 'k'
+            'k'
 
         37 ->
-            Ok 'l'
+            'l'
 
         38 ->
-            Ok 'm'
+            'm'
 
         39 ->
-            Ok 'n'
+            'n'
 
         40 ->
-            Ok 'o'
+            'o'
 
         41 ->
-            Ok 'p'
+            'p'
 
         42 ->
-            Ok 'q'
+            'q'
 
         43 ->
-            Ok 'r'
+            'r'
 
         44 ->
-            Ok 's'
+            's'
 
         45 ->
-            Ok 't'
+            't'
 
         46 ->
-            Ok 'u'
+            'u'
 
         47 ->
-            Ok 'v'
+            'v'
 
         48 ->
-            Ok 'w'
+            'w'
 
         49 ->
-            Ok 'x'
+            'x'
 
         50 ->
-            Ok 'y'
+            'y'
 
         51 ->
-            Ok 'z'
+            'z'
 
         52 ->
-            Ok '0'
+            '0'
 
         53 ->
-            Ok '1'
+            '1'
 
         54 ->
-            Ok '2'
+            '2'
 
         55 ->
-            Ok '3'
+            '3'
 
         56 ->
-            Ok '4'
+            '4'
 
         57 ->
-            Ok '5'
+            '5'
 
         58 ->
-            Ok '6'
+            '6'
 
         59 ->
-            Ok '7'
+            '7'
 
         60 ->
-            Ok '8'
+            '8'
 
         61 ->
-            Ok '9'
+            '9'
 
         62 ->
-            Ok '+'
+            '+'
 
         63 ->
-            Ok '/'
+            '/'
 
-        _ ->
-            Err "Invalid byte value for base64"
+        x ->
+            Debug.crash
+                ("Invalid byte value \""
+                    ++ (toString x)
+                    ++ "\" for base64"
+                )
+                '💣'

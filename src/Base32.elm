@@ -18,7 +18,7 @@ decode =
 
 {-| Encode a list of bytes into a base32 string.
 -}
-encode : List Int -> Result String String
+encode : List Int -> String
 encode =
     Coder.encode ( 5, 8, "=", intToChar, charToInt )
 
@@ -129,104 +129,109 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Result String Char
+intToChar : Int -> Char
 intToChar int =
     case int of
         0 ->
-            Ok 'A'
+            'A'
 
         1 ->
-            Ok 'B'
+            'B'
 
         2 ->
-            Ok 'C'
+            'C'
 
         3 ->
-            Ok 'D'
+            'D'
 
         4 ->
-            Ok 'E'
+            'E'
 
         5 ->
-            Ok 'F'
+            'F'
 
         6 ->
-            Ok 'G'
+            'G'
 
         7 ->
-            Ok 'H'
+            'H'
 
         8 ->
-            Ok 'I'
+            'I'
 
         9 ->
-            Ok 'J'
+            'J'
 
         10 ->
-            Ok 'K'
+            'K'
 
         11 ->
-            Ok 'L'
+            'L'
 
         12 ->
-            Ok 'M'
+            'M'
 
         13 ->
-            Ok 'N'
+            'N'
 
         14 ->
-            Ok 'O'
+            'O'
 
         15 ->
-            Ok 'P'
+            'P'
 
         16 ->
-            Ok 'Q'
+            'Q'
 
         17 ->
-            Ok 'R'
+            'R'
 
         18 ->
-            Ok 'S'
+            'S'
 
         19 ->
-            Ok 'T'
+            'T'
 
         20 ->
-            Ok 'U'
+            'U'
 
         21 ->
-            Ok 'V'
+            'V'
 
         22 ->
-            Ok 'W'
+            'W'
 
         23 ->
-            Ok 'X'
+            'X'
 
         24 ->
-            Ok 'Y'
+            'Y'
 
         25 ->
-            Ok 'Z'
+            'Z'
 
         26 ->
-            Ok '2'
+            '2'
 
         27 ->
-            Ok '3'
+            '3'
 
         28 ->
-            Ok '4'
+            '4'
 
         29 ->
-            Ok '5'
+            '5'
 
         30 ->
-            Ok '6'
+            '6'
 
         31 ->
-            Ok '7'
+            '7'
 
-        _ ->
-            Err "Invalid byte value for base32"
+        x ->
+            Debug.crash
+                ("Invalid byte value \""
+                    ++ (toString x)
+                    ++ "\" for base32"
+                )
+                '💣'

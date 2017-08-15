@@ -13,9 +13,12 @@ import Tuple
 
 
 type alias Scheme =
-    ( Int, Int, String, Int -> Result String Char, Char -> Result String Int )
+    ( Int, Int, String, Int -> Char, Char -> Result String Int )
 
 
+{-| Decode the given string according to the give scheme. The result is a list
+of integers ranging from 0 - 254
+-}
 decode : Scheme -> String -> Result String (List Int)
 decode ( octets, chars, padChar, intToChar, charToInt ) string =
     String.toList string
@@ -111,7 +114,10 @@ decodeChunk ( octets, chars, padChar, intToChar, charToInt ) chunk =
                 )
 
 
-encode : Scheme -> List Int -> Result String String
+{-| Ecode the given list of integers according to the give scheme. The result is
+a string
+-}
+encode : Scheme -> List Int -> String
 encode ( octets, chars, padChar, intToChar, charToInt ) bytes =
     let
         n =
@@ -134,19 +140,16 @@ encode ( octets, chars, padChar, intToChar, charToInt ) bytes =
                         0
                    )
     in
-        (groupsOf octets data)
-            |> map (encodeChunk ( octets, chars, padChar, intToChar, charToInt ))
-            |> combine
-            |> andThen
-                (\x ->
-                    -- String.join "" x |> Ok
-                    (String.join "" x |> String.slice 0 n)
-                        ++ (String.repeat p padChar)
-                        |> Ok
-                )
+        String.append
+            (groupsOf octets data
+                |> map (encodeChunk ( octets, chars, padChar, intToChar, charToInt ))
+                |> String.join ""
+                |> String.slice 0 n
+            )
+            (String.repeat p padChar)
 
 
-encodeChunk : Scheme -> List Int -> Result String String
+encodeChunk : Scheme -> List Int -> String
 encodeChunk ( octets, chars, padChar, intToChar, charToInt ) chunk =
     let
         bits =
@@ -199,5 +202,4 @@ encodeChunk ( octets, chars, padChar, intToChar, charToInt ) chunk =
                     in
                         intToChar byte
                 )
-            |> combine
-            |> andThen (\l -> String.fromList l |> Ok)
+            |> String.fromList
