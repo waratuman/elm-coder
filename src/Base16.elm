@@ -1,6 +1,6 @@
 module Base16 exposing (encode, decode)
 
-{-| Library for base32 encoding and decoding according to RFC 4648.
+{-| Library for base16 encoding and decoding according to RFC 4648.
 
 @docs encode, decode
 
@@ -9,7 +9,7 @@ module Base16 exposing (encode, decode)
 import Coder
 
 
-{-| Decode a base32 string into a list of bytes.
+{-| Decode a base16 string into a list of bytes.
 -}
 decode : String -> Result String (List Int)
 decode =
