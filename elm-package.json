@@ -1,6 +1,6 @@
 {
-    "version": "2.0.0",
-    "summary": "A Base64, Base32, and Base16 decoder and encoder",
+    "version": "2.0.1",
+    "summary": "A Base64, Base32, and Base16 (hexadecimal) decoder and encoder",
     "repository": "https://github.com/waratuman/elm-coder.git",
     "license": "BSD3",
     "source-directories": [
