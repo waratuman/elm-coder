@@ -1,9 +1,9 @@
-module Tests.Base64 exposing (..)
+module Tests.Base64 exposing (bytesOf, cases, decodeTests, encodeTests, suite)
 
-import Base64 exposing (encode, decode)
+import Base64 exposing (decode, encode)
+import Char
 import Expect exposing (Expectation)
 import Test exposing (..)
-import Char
 
 
 bytesOf : String -> List Int
@@ -39,11 +39,11 @@ encodeTests =
             (\( data, encoded ) ->
                 test
                     ("encode \"" ++ data ++ "\"")
-                <|
-                    \_ ->
+                    (\_ ->
                         Expect.equal
                             (encode (bytesOf data))
-                            encoded
+                            (Ok encoded)
+                    )
             )
 
 

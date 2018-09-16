@@ -1,26 +1,38 @@
-module Base64 exposing (encode, decode)
+module Base64 exposing (encode, decode, scheme)
 
 {-| Library for base64 encoding and decoding according to RFC 4648.
 
-@docs encode, decode
+@docs encode, decode, scheme
 
 -}
 
-import Coder
+import Coder exposing (Scheme)
+
+
+{-| The decoding / encoding scheme for base 64.
+-}
+scheme : Scheme
+scheme =
+    { octets = 3
+    , chars = 4
+    , padChar = "="
+    , intToChar = intToChar
+    , charToInt = charToInt
+    }
 
 
 {-| Decode a base64 string into a list of bytes.
 -}
 decode : String -> Result String (List Int)
 decode =
-    Coder.decode ( 3, 4, "=", intToChar, charToInt )
+    Coder.decode scheme
 
 
 {-| Encode a list of bytes into a base64 string.
 -}
-encode : List Int -> String
+encode : List Int -> Result String String
 encode =
-    Coder.encode ( 3, 4, "=", intToChar, charToInt )
+    Coder.encode scheme
 
 
 charToInt : Char -> Result String Int
@@ -225,205 +237,204 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Char
+intToChar : Int -> Result String Char
 intToChar int =
     case int of
         0 ->
-            'A'
+            Ok 'A'
 
         1 ->
-            'B'
+            Ok 'B'
 
         2 ->
-            'C'
+            Ok 'C'
 
         3 ->
-            'D'
+            Ok 'D'
 
         4 ->
-            'E'
+            Ok 'E'
 
         5 ->
-            'F'
+            Ok 'F'
 
         6 ->
-            'G'
+            Ok 'G'
 
         7 ->
-            'H'
+            Ok 'H'
 
         8 ->
-            'I'
+            Ok 'I'
 
         9 ->
-            'J'
+            Ok 'J'
 
         10 ->
-            'K'
+            Ok 'K'
 
         11 ->
-            'L'
+            Ok 'L'
 
         12 ->
-            'M'
+            Ok 'M'
 
         13 ->
-            'N'
+            Ok 'N'
 
         14 ->
-            'O'
+            Ok 'O'
 
         15 ->
-            'P'
+            Ok 'P'
 
         16 ->
-            'Q'
+            Ok 'Q'
 
         17 ->
-            'R'
+            Ok 'R'
 
         18 ->
-            'S'
+            Ok 'S'
 
         19 ->
-            'T'
+            Ok 'T'
 
         20 ->
-            'U'
+            Ok 'U'
 
         21 ->
-            'V'
+            Ok 'V'
 
         22 ->
-            'W'
+            Ok 'W'
 
         23 ->
-            'X'
+            Ok 'X'
 
         24 ->
-            'Y'
+            Ok 'Y'
 
         25 ->
-            'Z'
+            Ok 'Z'
 
         26 ->
-            'a'
+            Ok 'a'
 
         27 ->
-            'b'
+            Ok 'b'
 
         28 ->
-            'c'
+            Ok 'c'
 
         29 ->
-            'd'
+            Ok 'd'
 
         30 ->
-            'e'
+            Ok 'e'
 
         31 ->
-            'f'
+            Ok 'f'
 
         32 ->
-            'g'
+            Ok 'g'
 
         33 ->
-            'h'
+            Ok 'h'
 
         34 ->
-            'i'
+            Ok 'i'
 
         35 ->
-            'j'
+            Ok 'j'
 
         36 ->
-            'k'
+            Ok 'k'
 
         37 ->
-            'l'
+            Ok 'l'
 
         38 ->
-            'm'
+            Ok 'm'
 
         39 ->
-            'n'
+            Ok 'n'
 
         40 ->
-            'o'
+            Ok 'o'
 
         41 ->
-            'p'
+            Ok 'p'
 
         42 ->
-            'q'
+            Ok 'q'
 
         43 ->
-            'r'
+            Ok 'r'
 
         44 ->
-            's'
+            Ok 's'
 
         45 ->
-            't'
+            Ok 't'
 
         46 ->
-            'u'
+            Ok 'u'
 
         47 ->
-            'v'
+            Ok 'v'
 
         48 ->
-            'w'
+            Ok 'w'
 
         49 ->
-            'x'
+            Ok 'x'
 
         50 ->
-            'y'
+            Ok 'y'
 
         51 ->
-            'z'
+            Ok 'z'
 
         52 ->
-            '0'
+            Ok '0'
 
         53 ->
-            '1'
+            Ok '1'
 
         54 ->
-            '2'
+            Ok '2'
 
         55 ->
-            '3'
+            Ok '3'
 
         56 ->
-            '4'
+            Ok '4'
 
         57 ->
-            '5'
+            Ok '5'
 
         58 ->
-            '6'
+            Ok '6'
 
         59 ->
-            '7'
+            Ok '7'
 
         60 ->
-            '8'
+            Ok '8'
 
         61 ->
-            '9'
+            Ok '9'
 
         62 ->
-            '+'
+            Ok '+'
 
         63 ->
-            '/'
+            Ok '/'
 
         x ->
-            Debug.crash
+            Err
                 ("Invalid byte value \""
-                    ++ (toString x)
+                    ++ String.fromInt x
                     ++ "\" for base64"
                 )
-                '💣'

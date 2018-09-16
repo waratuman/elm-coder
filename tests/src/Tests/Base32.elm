@@ -1,9 +1,9 @@
-module Tests.Base16 exposing (..)
+module Tests.Base32 exposing (bytesOf, cases, decodeTests, encodeTests, suite)
 
-import Base16 exposing (encode, decode)
+import Base32 exposing (decode, encode)
+import Char
 import Expect exposing (Expectation)
 import Test exposing (..)
-import Char
 
 
 bytesOf : String -> List Int
@@ -14,12 +14,12 @@ bytesOf s =
 cases : List ( String, String )
 cases =
     [ ( "", "" )
-    , ( "f", "66" )
-    , ( "fo", "666F" )
-    , ( "foo", "666F6F" )
-    , ( "foob", "666F6F62" )
-    , ( "fooba", "666F6F6261" )
-    , ( "foobar", "666F6F626172" )
+    , ( "f", "MY======" )
+    , ( "fo", "MZXQ====" )
+    , ( "foo", "MZXW6===" )
+    , ( "foob", "MZXW6YQ=" )
+    , ( "fooba", "MZXW6YTB" )
+    , ( "foobar", "MZXW6YTBOI======" )
     ]
 
 
@@ -29,7 +29,7 @@ suite =
         [ encodeTests
         , decodeTests
         ]
-        |> describe "Base16"
+        |> describe "Base32"
 
 
 encodeTests : List Test
@@ -39,11 +39,11 @@ encodeTests =
             (\( data, encoded ) ->
                 test
                     ("encode \"" ++ data ++ "\"")
-                <|
-                    \_ ->
+                    (\_ ->
                         Expect.equal
                             (encode (bytesOf data))
-                            encoded
+                            (Ok encoded)
+                    )
             )
 
 

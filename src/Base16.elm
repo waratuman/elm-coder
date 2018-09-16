@@ -1,26 +1,38 @@
-module Base16 exposing (encode, decode)
+module Base16 exposing (encode, decode, scheme)
 
-{-| Library for base32 encoding and decoding according to RFC 4648.
+{-| Library for base16 encoding and decoding according to RFC 4648.
 
-@docs encode, decode
+@docs encode, decode, scheme
 
 -}
 
-import Coder
+import Coder exposing (Scheme)
+
+
+{-| The decoding / encoding scheme for base 16.
+-}
+scheme : Scheme
+scheme =
+    { octets = 1
+    , chars = 2
+    , padChar = "="
+    , intToChar = intToChar
+    , charToInt = charToInt
+    }
 
 
 {-| Decode a base32 string into a list of bytes.
 -}
 decode : String -> Result String (List Int)
 decode =
-    Coder.decode ( 1, 2, "=", intToChar, charToInt )
+    Coder.decode scheme
 
 
 {-| Encode a list of bytes into a base32 string.
 -}
-encode : List Int -> String
+encode : List Int -> Result String String
 encode =
-    Coder.encode ( 1, 2, "=", intToChar, charToInt )
+    Coder.encode scheme
 
 
 charToInt : Char -> Result String Int
@@ -78,61 +90,60 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Char
+intToChar : Int -> Result String Char
 intToChar int =
     case int of
         0 ->
-            '0'
+            Ok '0'
 
         1 ->
-            '1'
+            Ok '1'
 
         2 ->
-            '2'
+            Ok '2'
 
         3 ->
-            '3'
+            Ok '3'
 
         4 ->
-            '4'
+            Ok '4'
 
         5 ->
-            '5'
+            Ok '5'
 
         6 ->
-            '6'
+            Ok '6'
 
         7 ->
-            '7'
+            Ok '7'
 
         8 ->
-            '8'
+            Ok '8'
 
         9 ->
-            '9'
+            Ok '9'
 
         10 ->
-            'A'
+            Ok 'A'
 
         11 ->
-            'B'
+            Ok 'B'
 
         12 ->
-            'C'
+            Ok 'C'
 
         13 ->
-            'D'
+            Ok 'D'
 
         14 ->
-            'E'
+            Ok 'E'
 
         15 ->
-            'F'
+            Ok 'F'
 
         x ->
-            Debug.crash
+            Err
                 ("Invalid byte value \""
-                    ++ (toString x)
+                    ++ String.fromInt x
                     ++ "\" for base16"
                 )
-                '💣'

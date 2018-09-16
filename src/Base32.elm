@@ -1,26 +1,38 @@
-module Base32 exposing (encode, decode)
+module Base32 exposing (encode, decode, scheme)
 
 {-| Library for base32 encoding and decoding according to RFC 4648.
 
-@docs encode, decode
+@docs encode, decode, scheme
 
 -}
 
-import Coder
+import Coder exposing (Scheme)
+
+
+{-| The decoding / encoding scheme for base 32.
+-}
+scheme : Scheme
+scheme =
+    { octets = 5
+    , chars = 8
+    , padChar = "="
+    , intToChar = intToChar
+    , charToInt = charToInt
+    }
 
 
 {-| Decode a base32 string into a list of bytes.
 -}
 decode : String -> Result String (List Int)
 decode =
-    Coder.decode ( 5, 8, "=", intToChar, charToInt )
+    Coder.decode scheme
 
 
 {-| Encode a list of bytes into a base32 string.
 -}
-encode : List Int -> String
+encode : List Int -> Result String String
 encode =
-    Coder.encode ( 5, 8, "=", intToChar, charToInt )
+    Coder.encode scheme
 
 
 charToInt : Char -> Result String Int
@@ -129,109 +141,108 @@ charToInt char =
             Err "Invalid character"
 
 
-intToChar : Int -> Char
+intToChar : Int -> Result String Char
 intToChar int =
     case int of
         0 ->
-            'A'
+            Ok 'A'
 
         1 ->
-            'B'
+            Ok 'B'
 
         2 ->
-            'C'
+            Ok 'C'
 
         3 ->
-            'D'
+            Ok 'D'
 
         4 ->
-            'E'
+            Ok 'E'
 
         5 ->
-            'F'
+            Ok 'F'
 
         6 ->
-            'G'
+            Ok 'G'
 
         7 ->
-            'H'
+            Ok 'H'
 
         8 ->
-            'I'
+            Ok 'I'
 
         9 ->
-            'J'
+            Ok 'J'
 
         10 ->
-            'K'
+            Ok 'K'
 
         11 ->
-            'L'
+            Ok 'L'
 
         12 ->
-            'M'
+            Ok 'M'
 
         13 ->
-            'N'
+            Ok 'N'
 
         14 ->
-            'O'
+            Ok 'O'
 
         15 ->
-            'P'
+            Ok 'P'
 
         16 ->
-            'Q'
+            Ok 'Q'
 
         17 ->
-            'R'
+            Ok 'R'
 
         18 ->
-            'S'
+            Ok 'S'
 
         19 ->
-            'T'
+            Ok 'T'
 
         20 ->
-            'U'
+            Ok 'U'
 
         21 ->
-            'V'
+            Ok 'V'
 
         22 ->
-            'W'
+            Ok 'W'
 
         23 ->
-            'X'
+            Ok 'X'
 
         24 ->
-            'Y'
+            Ok 'Y'
 
         25 ->
-            'Z'
+            Ok 'Z'
 
         26 ->
-            '2'
+            Ok '2'
 
         27 ->
-            '3'
+            Ok '3'
 
         28 ->
-            '4'
+            Ok '4'
 
         29 ->
-            '5'
+            Ok '5'
 
         30 ->
-            '6'
+            Ok '6'
 
         31 ->
-            '7'
+            Ok '7'
 
         x ->
-            Debug.crash
+            Err
                 ("Invalid byte value \""
-                    ++ (toString x)
+                    ++ String.fromInt x
                     ++ "\" for base32"
                 )
-                '💣'
