@@ -21,7 +21,7 @@ scheme =
     }
 
 
-{-| Decode a base32 string into a list of bytes.
+{-| Decode a base16 string into a list of bytes.
 -}
 decode : String -> Result String (List Int)
 decode =
