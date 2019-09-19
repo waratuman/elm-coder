@@ -3,7 +3,7 @@
     "name": "waratuman/elm-coder",
     "summary": "A Base64, Base32, and Base16 (hexadecimal) decoder and encoder",
     "license": "BSD-3-Clause",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "exposed-modules": [
         "Base64",
         "Base32",
