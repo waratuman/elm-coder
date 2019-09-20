@@ -1,4 +1,10 @@
-module Coder exposing (Scheme, decode, decodeChunk, encode, encodeChunk)
+module Coder exposing
+    ( Scheme
+    , decode
+    , decodeChunk
+    , encode
+    , encodeChunk
+    )
 
 import Bitwise exposing (and, or, shiftLeftBy, shiftRightZfBy)
 import List exposing (head, map, tail)
