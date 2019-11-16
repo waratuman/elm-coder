@@ -165,6 +165,53 @@ encode ({ octets, chars, padChar, intToChar, charToInt } as scheme) bytes =
             )
 
 
+{-| Ecode the given list of integers according to the give scheme. The result is
+a string.
+
+Note that the list of integers must all be within the range 0 - 254! If any of
+the integers are greater than 254 the program will never terminate.
+
+-}
+unsafeEncode : Scheme -> List Int -> String
+unsafeEncode ({ octets, chars, padChar, intToChar, charToInt } as scheme) bytes =
+    let
+        n =
+            toFloat (List.length bytes * chars) / toFloat octets |> ceiling
+
+        p =
+            if modBy chars n > 0 then
+                chars - modBy chars n
+
+            else
+                0
+
+        data =
+            bytes
+                ++ List.repeat
+                    (if modBy octets (List.length bytes) > 0 then
+                        octets - modBy octets (List.length bytes)
+
+                     else
+                        0
+                    )
+                    0
+    in
+    groupsOf octets data
+        |> map (encodeChunk scheme)
+        |> combine
+        |> Result.map
+            (String.join ""
+                >> String.slice 0 n
+                >> (\x -> String.append x (String.repeat p padChar))
+            )
+        -- If this ever gets called with a number over 254, it will never
+        -- terminate! If that happens, use the safe method `encode` or debug
+        -- further by uncommenting this:
+        --
+        -- Debug.todo ("Tried to encode " ++ (Debug.toString bytes))
+        |> Result.withDefault (unsafeEncode scheme bytes)
+
+
 encodeChunk : Scheme -> List Int -> Result String String
 encodeChunk ({ octets, chars, padChar, intToChar, charToInt } as scheme) chunk =
     let
