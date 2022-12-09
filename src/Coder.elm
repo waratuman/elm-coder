@@ -128,7 +128,7 @@ decodeChunk ({ octets, chars, padChar, intToChar, charToInt } as scheme) chunk =
             )
 
 
-{-| Ecode the given list of integers according to the give scheme. The result is
+{-| Encode the given list of integers according to the give scheme. The result is
 a string
 -}
 encode : Scheme -> List Int -> Result String String
